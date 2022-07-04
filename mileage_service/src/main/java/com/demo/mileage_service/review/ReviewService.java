@@ -151,10 +151,9 @@ public class ReviewService {
         System.out.println(reviewEntity.getReviewPhotoList() == null);
         System.out.println(existReviewEntity.getReviewPhotoList() == null);
 
-
-        if (!reviewEntity.getReviewPhotoList().isEmpty() && existReviewEntity.getReviewPhotoList().isEmpty()){
+        if (reviewEntity.getReviewPhotoList() != null && existReviewEntity.getReviewPhotoList() == null){
             System.out.println("변경사항 발생 내용: 사진 추가됨");
-        } else if (reviewEntity.getReviewPhotoList().isEmpty() && !existReviewEntity.getReviewPhotoList().isEmpty()){
+        } else if (reviewEntity.getReviewPhotoList() == null && existReviewEntity.getReviewPhotoList() != null){
             System.out.println("변경사항 발생 내용: 사진 삭제됨");
         }
 
