@@ -10,4 +10,8 @@ public class MileageService {
     
     @Autowired
     private MileageRepository mileageRepository;
+
+    public void insertMileageInfo(MileageEntity mileageEntity){
+        mileageRepository.save(mileageEntity);
+    }
 }
