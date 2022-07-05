@@ -27,19 +27,10 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private MileageHstRepository mileageHstRepository; 
-
-    @Autowired
     private MileageHstService mileageHstService; 
 
     @Autowired
-    private MileageRepository mileageRepository;
-
-    @Autowired
     private ReviewPhotoService reviewPhotoService;
-
-    @Autowired
-    private PlaceService placeService;
 
     public ReviewEntity findOneByReviewId(String reviewId){
        return reviewRepository.findOneByReviewId(reviewId);
@@ -142,7 +133,11 @@ public class ReviewService {
             //마일리지 회수 이력
             //마일리지 회수
             ReviewEntity reviewEntityInfo = reviewRepository.findOneByReviewId(reviewEntity.getReviewId());
-            List<ReviewPhotoEntity> photoList = reviewEntityInfo.getReviewPhotoList();
+            List<ReviewPhotoEntity> photoList = null;
+            if(reviewEntityInfo.getReviewPhotoList() != null){
+                photoList = reviewEntityInfo.getReviewPhotoList();
+            }
+            
             
 
             if(photoList != null && !photoList.isEmpty()){

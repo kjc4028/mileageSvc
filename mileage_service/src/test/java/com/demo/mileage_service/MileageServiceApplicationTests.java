@@ -28,6 +28,9 @@ class MileageServiceApplicationTests {
 	@Autowired
 	MileageService mileageService;
 
+	final String testPlaceId = "3ede0ef2-92b7-4817-a5f3-0c575361f745";
+	final String testReviewId = "ea71431a-0438-43a6-9d97-d5ed5818f7cc";
+
 	@Test
 	void PlaceInsert(){
 		String uuid = UUID.randomUUID().toString();
@@ -45,7 +48,7 @@ class MileageServiceApplicationTests {
 
 	@Test
 	void ReviewInertTest() {
-		PlaceEntity placeEntity = PlaceEntity.builder("54644171-f135-4580-90bf-2b1f7ffea309").build();
+		PlaceEntity placeEntity = PlaceEntity.builder(testPlaceId).build();
 		String uuid = UUID.randomUUID().toString();
 		ReviewEntity reviewEntity = ReviewEntity.builder(uuid)
 		.reviewCts("test1")
@@ -60,9 +63,8 @@ class MileageServiceApplicationTests {
 
 	@Test
 	void ReviewModTest(){
-		PlaceEntity placeEntity = PlaceEntity.builder("54644171-f135-4580-90bf-2b1f7ffea309").build();
-		String uuid = "adc881a6-1227-4ae3-ab06-43699c6c6924";
-		ReviewEntity reviewEntity = ReviewEntity.builder(uuid)
+		PlaceEntity placeEntity = PlaceEntity.builder(testPlaceId).build();
+		ReviewEntity reviewEntity = ReviewEntity.builder(testReviewId)
 		//.reviewCts("test1234")
 		//.reviewCts(null)
 		.userId("kjc1")
@@ -76,13 +78,12 @@ class MileageServiceApplicationTests {
 
 	@Test
 	void ReviewDeleteTest(){
-		PlaceEntity placeEntity = PlaceEntity.builder("54644171-f135-4580-90bf-2b1f7ffea309").build();
-		String uuid = "ba04b7c1-0dff-451c-a88e-6a7157358fe5";
-		ReviewEntity reviewEntity = ReviewEntity.builder(uuid)
+		PlaceEntity placeEntity = PlaceEntity.builder(testPlaceId).build();
+		ReviewEntity reviewEntity = ReviewEntity.builder(testReviewId)
 		//.reviewCts("test1234")
 		//.reviewCts(null)
 		.userId("kjc1")
-		.placeEntity(placeEntity)
+		//.placeEntity(placeEntity)
 		.reviewPhotoList(null)
 		.build();
 
