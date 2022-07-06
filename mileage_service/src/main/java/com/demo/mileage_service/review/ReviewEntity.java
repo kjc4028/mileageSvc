@@ -3,8 +3,10 @@ package com.demo.mileage_service.review;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -42,8 +44,9 @@ public class ReviewEntity {
 
     String userId;
 
-    @OneToMany(mappedBy = "reviewEntity")
-    private List<ReviewPhotoEntity> reviewPhotoList = new ArrayList<ReviewPhotoEntity>();
+    @OneToMany(mappedBy = "reviewEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ReviewPhotoEntity> reviewPhotoList;
+    
 
     @ManyToOne
     @JoinColumn(name="placeId", foreignKey = @ForeignKey(name = "placeEntity", value = ConstraintMode.CONSTRAINT))

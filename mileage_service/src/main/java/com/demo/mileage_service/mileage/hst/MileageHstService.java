@@ -20,9 +20,6 @@ public class MileageHstService {
     @Autowired
     private MileageRepository mileageRepository;
 
-    public void decrementPoint(){
-
-    }
 
     //이력 적재
     //포인트 갱신
@@ -47,5 +44,9 @@ public class MileageHstService {
         mileageEntity.setPoint(mileageHstEntityForSave.getTotalPoint());
 
         mileageRepository.save(mileageEntity);
+    }
+
+    public MileageHstEntity findByReviewIdAndMileageCls(String reviewId, String mileageCls){
+        return mileageHstRepository.findByReviewIdAndMileageCls(reviewId, mileageCls);
     }
 }

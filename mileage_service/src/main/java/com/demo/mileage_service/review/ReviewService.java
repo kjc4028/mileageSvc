@@ -62,13 +62,14 @@ public class ReviewService {
             return "duple";
         }
 
-        String reviewId = UUID.randomUUID().toString();
-        reviewEntity.setReviewId(reviewId);
+        PlaceEntity placeIEntity = PlaceEntity.builder(reviewEntity.getPlaceEntity().getPlaceId()).build();
+        //String reviewId = UUID.randomUUID().toString();
+        //reviewEntity.setReviewId(reviewId);
         
-        reviewRepository.save(reviewEntity);
+        
 
         //최초등록여부 구분
-        int reviewCnt = reviewRepository.findByReviewId(reviewEntity.getReviewId()).size();
+        int reviewCnt = (reviewRepository.findByPlaceEntity(placeIEntity)).size();
         
         //최초등록
         if(reviewCnt == 0){
@@ -83,6 +84,8 @@ public class ReviewService {
         if(reviewEntity.getReviewPhotoList() != null){
             mileageHstService.pointDecInc(reviewEntity, "내용점수(사진) 적립", 1);                
         }
+
+        reviewRepository.save(reviewEntity);
 
         return "reviewInsSucc";
 
@@ -100,19 +103,19 @@ public class ReviewService {
                 //마일리지 회수
         ReviewEntity existReviewEntity = reviewRepository.findOneByReviewId(reviewEntity.getReviewId());
 
-         if (reviewEntity.getReviewCts() != null 
+         if (reviewEntity.getReviewCts() != null && reviewEntity.getReviewCts().length()>0
             && existReviewEntity.getReviewCts() == null){
             System.out.println("변경사항 발생 내용: 내용 추가됨");
             mileageHstService.pointDecInc(reviewEntity, "내용점수(텍스트) 적립", 1);   
             //포인트 이력 증감 함수
         } else if (reviewEntity.getReviewCts() == null 
-            && existReviewEntity.getReviewCts() != null){
+            && existReviewEntity.getReviewCts() != null && existReviewEntity.getReviewCts().length()>0){
             System.out.println("변경사항 발생 내용: 내용 삭제됨");
             mileageHstService.pointDecInc(reviewEntity, "내용점수(텍스트) 차감", -1);   
         }
         
         //reviewEntity와 existReviewEntity 차이
-        if (reviewEntity.getReviewPhotoList() != null 
+        if (reviewEntity.getReviewPhotoList() != null && reviewEntity.getReviewPhotoList().size()>0
             && existReviewEntity.getReviewPhotoList().isEmpty()){
             System.out.println("변경사항 발생 내용: 사진 추가됨");
             mileageHstService.pointDecInc(reviewEntity, "내용점수(사진) 적립", 1);   
@@ -128,11 +131,21 @@ public class ReviewService {
 
     public void deleteReview(ReviewEntity reviewEntity){
         //리뷰삭제
+            //보너스포인트 적립여부 확인 필요    
             //사진삭제
             //리뷰삭제
             //마일리지 회수 이력
             //마일리지 회수
+
+            MileageHstEntity mileageHstEntity = mileageHstService.findByReviewIdAndMileageCls("rv03","보너스점수 적립");
+            
+
             ReviewEntity reviewEntityInfo = reviewRepository.findOneByReviewId(reviewEntity.getReviewId());
+
+            if(mileageHstEntity != null){
+                mileageHstService.pointDecInc(reviewEntityInfo, "리뷰삭제 보너스 회수", -1);
+            }
+
             List<ReviewPhotoEntity> photoList = null;
             if(reviewEntityInfo.getReviewPhotoList() != null){
                 photoList = reviewEntityInfo.getReviewPhotoList();

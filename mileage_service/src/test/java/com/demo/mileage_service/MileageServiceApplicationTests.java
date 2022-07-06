@@ -1,20 +1,29 @@
 package com.demo.mileage_service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.demo.mileage_service.mileage.MileageEntity;
 import com.demo.mileage_service.mileage.MileageService;
+import com.demo.mileage_service.mileage.hst.MileageHstEntity;
+import com.demo.mileage_service.mileage.hst.MileageHstService;
 import com.demo.mileage_service.place.PlaceEntity;
 import com.demo.mileage_service.place.PlaceService;
 import com.demo.mileage_service.review.ReviewEntity;
 import com.demo.mileage_service.review.ReviewService;
+import com.demo.mileage_service.review.AttFile.ReviewPhotoEntity;
+import com.demo.mileage_service.review.AttFile.ReviewPhotoRepository;
 
 @SpringBootTest
 class MileageServiceApplicationTests {
@@ -28,8 +37,14 @@ class MileageServiceApplicationTests {
 	@Autowired
 	MileageService mileageService;
 
-	final String testPlaceId = "3ede0ef2-92b7-4817-a5f3-0c575361f745";
-	final String testReviewId = "ea71431a-0438-43a6-9d97-d5ed5818f7cc";
+	@Autowired
+	MileageHstService mileageHstService;
+
+	@Autowired
+	ReviewPhotoRepository reviewPhotoRepository;
+	
+	final String testPlaceId = "2e4baf1c-5acb-4efb-a1af-eddada31b00f";
+	final String testReviewId = "111";
 
 	@Test
 	void PlaceInsert(){
@@ -50,14 +65,30 @@ class MileageServiceApplicationTests {
 	void ReviewInertTest() {
 		PlaceEntity placeEntity = PlaceEntity.builder(testPlaceId).build();
 		String uuid = UUID.randomUUID().toString();
+		ReviewEntity reviewEntity1 = ReviewEntity.builder(uuid).build();
+
+
+		List<ReviewPhotoEntity> reviewPhotoList = new ArrayList<ReviewPhotoEntity>();
+		ReviewPhotoEntity reviewPhotoEntity = ReviewPhotoEntity.builder("1111111").build();
+		//reviewPhotoRepository.save(reviewPhotoEntity);
+		//em.persist(reviewPhotoEntity);
+		reviewPhotoList.add(reviewPhotoEntity);
+	
+		
+
 		ReviewEntity reviewEntity = ReviewEntity.builder(uuid)
-		.reviewCts("test1")
+		.reviewCts("222222")
 		.userId("kjc1")
 		.placeEntity(placeEntity)
-		.reviewPhotoList(null)
+		.reviewPhotoList(new ArrayList<>())
 		.build();
-		//reviewService.save(revieweEntity);
 
+		reviewPhotoEntity.setReviewEntity(reviewEntity);
+		reviewEntity.getReviewPhotoList().add(reviewPhotoEntity);
+		
+		//reviewService.save(reviewEntity);
+		//reviewPhotoRepository.save(reviewPhotoEntity);
+		
 		reviewService.reviewInsert(reviewEntity);
 	}
 
@@ -80,15 +111,20 @@ class MileageServiceApplicationTests {
 	void ReviewDeleteTest(){
 		PlaceEntity placeEntity = PlaceEntity.builder(testPlaceId).build();
 		ReviewEntity reviewEntity = ReviewEntity.builder(testReviewId)
-		//.reviewCts("test1234")
+		.reviewCts("test1234")
 		//.reviewCts(null)
 		.userId("kjc1")
-		//.placeEntity(placeEntity)
+		.placeEntity(placeEntity)
 		.reviewPhotoList(null)
 		.build();
 
 		reviewService.deleteReview(reviewEntity);
 	}
 
+	@Test
+	void ReviewBnsFInd(){
+		MileageHstEntity mileageHstEntity = mileageHstService.findByReviewIdAndMileageCls("rv03","보너스점수 적립");
+		System.out.println("bnstest : " + mileageHstEntity);
+	}
 
 }

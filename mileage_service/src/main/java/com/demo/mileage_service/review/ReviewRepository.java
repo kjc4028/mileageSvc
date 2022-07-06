@@ -12,6 +12,8 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, String> {
 
     public List<ReviewEntity> findByReviewId(String reviewId);
     
+    public List<ReviewEntity> findByPlaceEntity(PlaceEntity placeId);
+    
     public List<ReviewEntity> findByPlaceEntityAndUserId(PlaceEntity placeEntity, String userId);
 
 

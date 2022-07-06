@@ -8,4 +8,5 @@ public interface MileageHstRepository extends JpaRepository<MileageHstEntity, St
     // @Query("SELECT distinct FIRST_VALUE(total_point) OVER(ORDER BY action_dh DESC) from mileage_hst")
     // int lastestPoint();
 
+    public MileageHstEntity findByReviewIdAndMileageCls(String reviewId, String mileageCls);
 }
