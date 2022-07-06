@@ -1,5 +1,7 @@
 package com.demo.mileage_service.common;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -13,7 +15,7 @@ public class EventDto {
     
     private String content;
     
-    private String[] attachedPhotoIds;
+    private List<String> attachedPhotoIds;
    
     private String userId;
     

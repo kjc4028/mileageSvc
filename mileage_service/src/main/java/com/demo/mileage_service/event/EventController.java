@@ -30,19 +30,18 @@ public class EventController {
     @PostMapping("/event")
     @ResponseBody
     public ResponseEntity<Message> eventCall(@RequestBody EventDto eventDto){
-        System.out.println(">>>>>");
-        System.out.println(eventDto.getAttachedPhotoIds());
+        
         HttpHeaders headers = new HttpHeaders();
         Message message = new Message();
+        HttpStatus httpStatus = HttpStatus.OK;
+        String resultMsg = "";
 
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        String[] photoArr = eventDto.getAttachedPhotoIds();
-        List<ReviewPhotoEntity> reviewPhotoList = new ArrayList<ReviewPhotoEntity>();
-        System.out.println(photoArr[0]); 
+        List<String> photoArr = new ArrayList<String>();
+        if(eventDto.getAttachedPhotoIds() != null){
+            photoArr = eventDto.getAttachedPhotoIds();
+        }
+
         PlaceEntity placeEntity = PlaceEntity.builder(eventDto.getPlaceId()).build();
-
-
-        
 
         ReviewEntity reviewEntity = ReviewEntity.builder(eventDto.getReviewId())
                                     .reviewCts(eventDto.getContent())
@@ -54,25 +53,25 @@ public class EventController {
         for(String photoId : photoArr){
             ReviewPhotoEntity reviewPhotoEntity = ReviewPhotoEntity.builder(photoId).build();
             reviewPhotoEntity.setReviewEntity(reviewEntity);
-            //reviewPhotoList.add(reviewPhotoEntity);
             reviewEntity.getReviewPhotoList().add(reviewPhotoEntity);
         }
 
         if(eventDto.getType().equals("REVIEW")){
             if(eventDto.getAction().equals("ADD")){
-                reviewService.reviewInsert(reviewEntity);
+                resultMsg = reviewService.reviewInsert(reviewEntity);
             } else if(eventDto.getAction().equals("MOD")) {
-                reviewService.modReview(reviewEntity);
+                resultMsg = reviewService.modReview(reviewEntity);
             } else if(eventDto.getAction().equals("DELETE")){
-                reviewService.deleteReview(reviewEntity);
+                resultMsg = reviewService.deleteReview(reviewEntity);
             }
         }
 
-
         message.setData("data");
-        message.setMessage("message");
-        message.setStatus(HttpStatus.OK);
+        message.setMessage(resultMsg);
+        message.setStatus(httpStatus);
         
-        return new ResponseEntity<Message>(message, headers, HttpStatus.OK);
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        return new ResponseEntity<Message>(message, headers, httpStatus);
     }
 }

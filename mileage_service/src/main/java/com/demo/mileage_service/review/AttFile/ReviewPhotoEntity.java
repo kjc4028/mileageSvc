@@ -1,5 +1,6 @@
 package com.demo.mileage_service.review.AttFile;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,7 +35,7 @@ public class ReviewPhotoEntity {
 
     String fineNm;
     
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reviewId", foreignKey = @ForeignKey(name = "reviewEntity", value = ConstraintMode.CONSTRAINT))
     private ReviewEntity reviewEntity;
 
