@@ -11,6 +11,10 @@ public class MileageService {
     @Autowired
     private MileageRepository mileageRepository;
 
+    public MileageEntity findByUserId(String userId){
+        return mileageRepository.findByUserId(userId);
+    }
+
     public void insertMileageInfo(MileageEntity mileageEntity){
         mileageRepository.save(mileageEntity);
     }
