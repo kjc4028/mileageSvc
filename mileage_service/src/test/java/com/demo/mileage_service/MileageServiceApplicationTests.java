@@ -16,9 +16,9 @@ import com.demo.mileage_service.place.PlaceEntity;
 import com.demo.mileage_service.place.PlaceService;
 import com.demo.mileage_service.review.ReviewEntity;
 import com.demo.mileage_service.review.ReviewService;
-import com.demo.mileage_service.review.AttFile.ReviewPhotoEntity;
-import com.demo.mileage_service.review.AttFile.ReviewPhotoRepository;
-import com.demo.mileage_service.review.AttFile.ReviewPhotoService;
+import com.demo.mileage_service.review.photo.ReviewPhotoEntity;
+import com.demo.mileage_service.review.photo.ReviewPhotoRepository;
+import com.demo.mileage_service.review.photo.ReviewPhotoService;
 
 @SpringBootTest
 class MileageServiceApplicationTests {

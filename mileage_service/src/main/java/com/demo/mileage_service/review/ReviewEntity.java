@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.demo.mileage_service.place.PlaceEntity;
-import com.demo.mileage_service.review.AttFile.ReviewPhotoEntity;
+import com.demo.mileage_service.review.photo.ReviewPhotoEntity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

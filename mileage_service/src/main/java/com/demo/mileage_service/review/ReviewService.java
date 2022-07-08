@@ -13,9 +13,9 @@ import com.demo.mileage_service.common.Code;
 import com.demo.mileage_service.mileage.hst.MileageHstEntity;
 import com.demo.mileage_service.mileage.hst.MileageHstService;
 import com.demo.mileage_service.place.PlaceEntity;
-import com.demo.mileage_service.review.AttFile.ReviewPhotoEntity;
-import com.demo.mileage_service.review.AttFile.ReviewPhotoRepository;
-import com.demo.mileage_service.review.AttFile.ReviewPhotoService;
+import com.demo.mileage_service.review.photo.ReviewPhotoEntity;
+import com.demo.mileage_service.review.photo.ReviewPhotoRepository;
+import com.demo.mileage_service.review.photo.ReviewPhotoService;
 
 @Service
 @Transactional

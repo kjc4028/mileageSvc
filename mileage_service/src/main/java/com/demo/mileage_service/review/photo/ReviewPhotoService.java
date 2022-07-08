@@ -1,4 +1,4 @@
-package com.demo.mileage_service.review.AttFile;
+package com.demo.mileage_service.review.photo;
 
 import java.util.List;
 

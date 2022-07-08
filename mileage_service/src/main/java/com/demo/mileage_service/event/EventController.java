@@ -4,10 +4,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,7 +25,7 @@ import com.demo.mileage_service.place.PlaceEntity;
 import com.demo.mileage_service.place.PlaceService;
 import com.demo.mileage_service.review.ReviewEntity;
 import com.demo.mileage_service.review.ReviewService;
-import com.demo.mileage_service.review.AttFile.ReviewPhotoEntity;
+import com.demo.mileage_service.review.photo.ReviewPhotoEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -75,7 +73,12 @@ public class EventController {
         if(eventDto.getType().equals("REVIEW")){
             if(eventDto.getAction().equals("ADD")){
                 resultMsg = reviewService.reviewInsert(reviewEntity);
-                proccessMsg = "리뷰 등록 완료";
+                if(resultMsg.equals("reviewInsSucc")){
+                    proccessMsg = "리뷰 등록 완료";
+
+                } else if(resultMsg.equals("duple")){
+                    proccessMsg = "동일 장소 리뷰 중복 등록 불가";
+                }
             } else if(eventDto.getAction().equals("MOD")) {
                 resultMsg = reviewService.modReview(reviewEntity);
                 proccessMsg = "리뷰 수정 완료";
