@@ -30,7 +30,7 @@ public class PlaceEntity {
     String placeNm;
 
     @OneToMany(mappedBy = "placeEntity")
-    private List<ReviewEntity> reviewEntityList = new ArrayList<ReviewEntity>();
+    private List<ReviewEntity> reviewEntityList;
 
     public static PlaceEntityBuilder builder(String id){
         return placeEntityBuilder().placeId(id);

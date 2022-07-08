@@ -107,23 +107,19 @@ public class EventController {
         HashMap<String, Object> resMap = new HashMap<String, Object>();
         ObjectMapper om = new ObjectMapper();
         
-        String resData = "";
         String proccessMsg = "";
 
         MileageEntity mileageEntity = mileageService.findByUserId(eventDto.getUserId());
         
-        // resMap.put("userId", mileageEntity.getUserId());
-        // resMap.put("point", mileageEntity.getPoint());
         resMap = om.convertValue(mileageEntity, HashMap.class);
 
         try {
-            resData = om.writeValueAsString(resMap);
             proccessMsg = "정상조회";
         } catch (Exception e) {
             proccessMsg = "포인트조회중 문제 발생";
         }
 
-        message.setData(resData);
+        message.setData(resMap);
         message.setMessage(proccessMsg);
         message.setStatus(httpStatus);
 
@@ -132,27 +128,35 @@ public class EventController {
         return new ResponseEntity<Message>(message, headers, httpStatus);
     }
 
-    @PostMapping("/mileage")
+    @PostMapping("/mileage/join")
     @ResponseBody
     public ResponseEntity<Message> joinMileage(@RequestBody EventDto eventDto){
         HttpHeaders headers = new HttpHeaders();
         Message message = new Message();
         HttpStatus httpStatus = HttpStatus.OK;
-        String resData = "";
+        HashMap<String, Object> resMap = new HashMap<String, Object>();
+        ObjectMapper om = new ObjectMapper();
         String proccessMsg = "";
         String userId = "";
 
         userId = eventDto.getUserId();
 
-        if(userId == null){
+        if(userId == null || userId.isEmpty()){
             proccessMsg = "가입 할 아이디를 입력하세요.";
         } else{
             MileageEntity mileageEntity = MileageEntity.builder(eventDto.getUserId()).point(0).build();
-            mileageService.insertMileageInfo(mileageEntity);
-            proccessMsg = "ID : " + eventDto.getUserId() + " 가입 성공";
+
+            MileageEntity dupleMember = mileageService.findByUserId(userId);
+            if(dupleMember != null){
+                proccessMsg = "이미 등록된 아이디 입니다.";
+            } else {
+                mileageService.insertMileageInfo(mileageEntity);
+                proccessMsg = "마일리지 가입 성공";
+                resMap = om.convertValue(mileageEntity, HashMap.class);
+            }
         }
 
-        message.setData(resData);
+        message.setData(resMap);
         message.setMessage(proccessMsg);
         message.setStatus(httpStatus);
 
@@ -167,7 +171,8 @@ public class EventController {
         HttpHeaders headers = new HttpHeaders();
         Message message = new Message();
         HttpStatus httpStatus = HttpStatus.OK;
-        String resData = "";
+        HashMap<String, Object> resMap = new HashMap<String, Object>();
+        ObjectMapper om = new ObjectMapper();
         String proccessMsg = "";
 
 
@@ -177,12 +182,14 @@ public class EventController {
             proccessMsg = "등록할 장소를 입력하세요.";
         } else {
             PlaceEntity placeEntity = PlaceEntity.builder(uuid).placeNm(placeDto.getPlaceNm()).build();
-    
+            
             placeService.insertPlace(placeEntity);
             proccessMsg = "장소등록 성공";
+            resMap = om.convertValue(placeEntity, HashMap.class);
         }
 
-        message.setData(resData);
+
+        message.setData(resMap);
         message.setMessage(proccessMsg);
         message.setStatus(httpStatus);
 
