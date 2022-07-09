@@ -68,10 +68,6 @@ public class ReviewService {
         }
 
         PlaceEntity placeIEntity = PlaceEntity.builder(reviewEntity.getPlaceEntity().getPlaceId()).build();
-        //String reviewId = UUID.randomUUID().toString();
-        //reviewEntity.setReviewId(reviewId);
-        
-        
 
         //최초등록여부 구분
         int reviewCnt = (reviewRepository.findByPlaceEntity(placeIEntity)).size();
@@ -86,7 +82,7 @@ public class ReviewService {
             mileageHstService.pointDecInc(reviewEntity, Code.RV_CT_ACC.getMsg(), 1);        
         }
 
-        if(reviewEntity.getReviewPhotoList() != null){
+        if(reviewEntity.getReviewPhotoList() != null && reviewEntity.getReviewPhotoList().size() > 0){
             mileageHstService.pointDecInc(reviewEntity, Code.RV_PT_ACC.getMsg(), 1);                
         }
 
@@ -108,12 +104,12 @@ public class ReviewService {
                 //마일리지 회수
         ReviewEntity existReviewEntity = reviewRepository.findOneByReviewId(reviewEntity.getReviewId());
         StringBuilder resultMsg = new StringBuilder();
+
          if (reviewEntity.getReviewCts() != null && reviewEntity.getReviewCts().length()>0
             && existReviewEntity.getReviewCts() == null){
             logger.debug("변경사항 발생 내용: 내용 추가됨");
             resultMsg.append(Code.RV_CT_ACC.getMsg() + " ");
             mileageHstService.pointDecInc(reviewEntity, Code.RV_CT_ACC.getMsg(), 1);   
-            //포인트 이력 증감 함수
         } else if (reviewEntity.getReviewCts() == null 
             && existReviewEntity.getReviewCts() != null && existReviewEntity.getReviewCts().length()>0){
             logger.debug("변경사항 발생 내용: 내용 삭제됨");
@@ -121,7 +117,6 @@ public class ReviewService {
             mileageHstService.pointDecInc(reviewEntity, Code.RV_CT_DED.getMsg(), -1);   
         }
         
-        //reviewEntity와 existReviewEntity 차이
         if (reviewEntity.getReviewPhotoList() != null && reviewEntity.getReviewPhotoList().size()>0
             && existReviewEntity.getReviewPhotoList().isEmpty()){
             logger.debug("변경사항 발생 내용: 사진 추가됨");
@@ -150,7 +145,6 @@ public class ReviewService {
             //마일리지 회수
             StringBuilder resultMsg = new StringBuilder();
             MileageHstEntity mileageHstEntity = mileageHstService.findByReviewIdAndMileageCls(reviewEntity.getReviewId(),Code.BNS_ACC.getMsg());
-            
 
             ReviewEntity reviewEntityInfo = reviewRepository.findOneByReviewId(reviewEntity.getReviewId());
 

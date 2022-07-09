@@ -59,8 +59,8 @@ public class EventController {
 
         ReviewEntity reviewEntity = ReviewEntity.builder(eventDto.getReviewId())
                                     .reviewCts(eventDto.getContent())
-                                    .reviewPhotoList(new ArrayList<>())
                                     .userId(eventDto.getUserId())
+                                    .reviewPhotoList(new ArrayList<>())
                                     .placeEntity(placeEntity)
                                     .build();
 
