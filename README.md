@@ -1,4 +1,4 @@
-# mileage_service
+# mileageSvc
 
 #### 리뷰작성에 따라서 마일리지 적립/회수를 처리하는 프로젝트 입니다.
 ---
